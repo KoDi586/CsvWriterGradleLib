@@ -1,19 +1,40 @@
 plugins {
     id 'java-library'
+    id 'maven-publish'
 }
 
 group = 'org.example'
-version = '1.0-SNAPSHOT'
+version = '1.0.1'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
 
 repositories {
     mavenCentral()
 }
 
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}
+
 dependencies {
-    testImplementation platform('org.junit:junit-bom:5.10.0')
-    testImplementation 'org.junit.jupiter:junit-jupiter'
+    implementation libs.opencsv
+
+    testImplementation platform(libs.junit.bom)
+    testImplementation libs.junit.jupiter
 }
 
 test {
     useJUnitPlatform()
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            from components.java
+        }
+    }
 }
