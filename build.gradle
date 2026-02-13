@@ -4,7 +4,32 @@ plugins {
 }
 
 group = 'org.example'
-version = '1.0.0'
+version = '1.0.1'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}
+
+dependencies {
+    implementation libs.opencsv
+
+    testImplementation platform(libs.junit.bom)
+    testImplementation libs.junit.jupiter
+}
+
+test {
+    useJUnitPlatform()
+}
 
 publishing {
     publications {
@@ -13,18 +38,3 @@ publishing {
         }
     }
 }
-
-repositories {
-    mavenCentral()
-}
-
-dependencies {
-    testImplementation platform('org.junit:junit-bom:5.10.0')
-    testImplementation 'org.junit.jupiter:junit-jupiter'
-    implementation 'com.opencsv:opencsv:5.9'
-}
-
-test {
-    useJUnitPlatform()
-}
-
